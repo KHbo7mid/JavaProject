@@ -8,6 +8,7 @@ import Enseignant.Enseignant;
 import Enseignant.EnseignantDAO;
 import Etudiant.Etudiant;
 import Etudiant.EtudiantDAO;
+import IHMEnseignant.EnseignantGUI;
 import IHMEtudiant.HomePage;
 import db_config.Config;
 
@@ -65,6 +66,7 @@ public class Authentification extends Thread {
             int code = Integer.parseInt(password);
             EnseignantDAO dataEnseignant = new EnseignantDAO(Config.URL, Config.USERNAME, Config.PASSWORD);
             Enseignant enseignantRech = dataEnseignant.Recherche(code);
+
            return  enseignantRech!=null;
         } else if (role.equals("etudiant")) {
             EtudiantDAO dataEtudiant = new EtudiantDAO(Config.URL, Config.USERNAME, Config.PASSWORD);
@@ -87,7 +89,8 @@ public class Authentification extends Thread {
             }
         }
         else {
-            //interface enseignant
+
+           // EnseignantGUI egui=new EnseignantGUI(,"ghomriani",100);
         }
         out.println("FAILURE");
         out.flush();

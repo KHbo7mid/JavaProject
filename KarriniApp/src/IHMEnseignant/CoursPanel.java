@@ -28,7 +28,8 @@ public class CoursPanel extends JPanel {
 
         JScrollPane courstableScrollPane = new JScrollPane(coursTable);
         courstableScrollPane.setPreferredSize(new Dimension(600, 400));
-        setOpaque(true);
+        setOpaque(false);
         add(courstableScrollPane);
+        new Update().start();
     }
 }
