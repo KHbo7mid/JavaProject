@@ -150,6 +150,48 @@ public class EnseignantDAO implements ENSEIGNANTDAOCRUD {
 
         return enseignant;
     }
+    public Enseignant RechercheAuthentification(String email, String password) {
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Enseignant enseignant = null;
+
+        try {
+            // Establish connection
+            if(connection!=null)
+            {
+                int code=Integer.parseInt(password);
+
+                // SQL query
+                String query = "SELECT * FROM enseignant WHERE code = ? and email=?";
+
+                // Prepare the statement
+                statement = connection.prepareStatement(query);
+                statement.setInt(1, code);
+                statement.setString(2, email);
+
+                // Execute the query
+                resultSet = statement.executeQuery();
+
+                // Check if the result set has any rows
+                if (resultSet.next()) {
+                    // Retrieve the data from the result set
+                    String nom = resultSet.getString("nom");
+                    String prenom = resultSet.getString("prenom");
+
+                    String matiere = resultSet.getString("matiere");
+
+                    // Create a new Enseignant object
+                    enseignant = new Enseignant(code, nom, prenom, email, matiere);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return enseignant;
+    }
 }
 
 

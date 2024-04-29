@@ -78,6 +78,7 @@ public class PanelChat extends JPanel {
                         int id=getKey((String) jl.getSelectedValue());
 
 
+
                         ChatInterface chatInterface=new ChatInterface(chat,(String)jl.getSelectedValue(),id,idUser,User);
                         jtp.addTab((String) jl.getSelectedValue(),chatInterface);
                         contactOuvert.add(String.valueOf(jl.getSelectedIndex()));
@@ -155,30 +156,7 @@ public class PanelChat extends JPanel {
         }
     }
 
-    static class UpdateContactEnseignant extends Thread {
-        @Override
-        public void run() {
-            try {
-                DemandeDAO demandeDAO = new DemandeDAO(Config.URL, Config.USERNAME, Config.PASSWORD);
-                String req = "select e.code,e.nom,e.prenom from enseignant e,demandeetd d,cours c where d.idCours=c.idCours and c.idenseignant=e.code";
-                ResultSet rs = demandeDAO.selection(req);
-                if (rs != null) {
-                    while (rs.next()) {
-                        int code = rs.getInt("code");
-                        String nomEnseignant = rs.getString("nom") + " " + rs.getString("prenom");
-                        SwingUtilities.invokeLater(() -> PanelChat.addContact(code, nomEnseignant));
-                    }
-                }
-                else{
-                    System.out.println("rs est null");
-                }
 
-
-            } catch (
-                    SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
-}
+

@@ -133,7 +133,7 @@ public class PanelHome extends JPanel {
                                new    PanelFormation.UpdateDemandeTable().start();
 
                                  PanelChat.addContact(codeprof,nomEnseignant);
-                            //narj3elha mba3d
+
 
                                   JOptionPane.showMessageDialog(null,"Ajoute effectué avec succes");
 

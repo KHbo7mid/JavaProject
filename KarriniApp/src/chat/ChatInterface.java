@@ -71,10 +71,9 @@ pnomContact=new JPanel(new FlowLayout(FlowLayout.LEFT,20,20));
                  for (Message message : messages) {
 
 
-                           if(message.getIdReceiver()==idReseiver && message.getIdSender()==idSender||message.getIdSender()==idReseiver && message.getIdReceiver()==idSender)
-                           {
+                         if(message.getIdSender()==idSender || message.getIdReceiver()==idReseiver||message.getIdSender()==idReseiver)
                                chatArea.append(message.toString());
-                           }
+
 
 
 

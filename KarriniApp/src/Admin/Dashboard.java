@@ -142,7 +142,7 @@ listeEnseignant.addActionListener(new ActionListener() {
         });
 
         limage=new JLabel();
-        img=new ImageIcon("src/images/admin.jpeg");
+        img=new ImageIcon("KarriniApp/src/images/admin.jpeg");
         Image image=img.getImage().getScaledInstance(80,65,Image.SCALE_SMOOTH);
         ImageIcon newImg =new ImageIcon(image);
         limage.setIcon(newImg);

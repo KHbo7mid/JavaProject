@@ -8,6 +8,7 @@ import Enseignant.Enseignant;
 import Enseignant.EnseignantDAO;
 import Etudiant.Etudiant;
 import Etudiant.EtudiantDAO;
+import IHMEnseignant.EnseignantGUI;
 import IHMEtudiant.HomePage;
 import db_config.Config;
 
@@ -18,6 +19,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLException;
 
 public class Authentification extends Thread {
     PrintWriter out = null;
@@ -37,16 +39,33 @@ public class Authentification extends Thread {
                 String email = in.readLine();
                 String password = in.readLine();
                 String role = in.readLine();
-                boolean isAuthenticated = authenticate(email, password, role);
-                if (isAuthenticated)
+                if(role.equals("etudiant"))
                 {
-                    openInterface(email,password,role);
-                }
-                else {
-                    out.println("FAILURE");
-                    out.flush();
+                    boolean isAuthenticated = authenticateEtudiant(email, password);
+                    if (isAuthenticated)
+                    {
+                        openInterfaceEtudiant(email,password);
+                    }
+                    else {
+                        out.println("FAILURE");
+                        out.flush();
 
+                    }
                 }
+                if(role.equals("enseignant"))
+                {
+                    boolean isAuthenticated = authenticateEnseignant(email, password);
+                    if (isAuthenticated)
+                    {
+                        openInterfaceEnseignant(email,password);
+                    }
+                    else {
+                        out.println("FAILURE");
+                        out.flush();
+                    }
+                }
+
+
 
             }
         } catch (SocketException e) {
@@ -60,23 +79,24 @@ public class Authentification extends Thread {
     }
 
 
-    private boolean authenticate(String email, String password, String role) {
-        if (role.equals("enseignant")) {
-            int code = Integer.parseInt(password);
-            EnseignantDAO dataEnseignant = new EnseignantDAO(Config.URL, Config.USERNAME, Config.PASSWORD);
-            Enseignant enseignantRech = dataEnseignant.Recherche(code);
-           return  enseignantRech!=null;
-        } else if (role.equals("etudiant")) {
+    private boolean authenticateEtudiant(String email, String password) {
+
             EtudiantDAO dataEtudiant = new EtudiantDAO(Config.URL, Config.USERNAME, Config.PASSWORD);
             Etudiant etudiantRech = dataEtudiant.Recherche(password.toCharArray(),email);
           return  etudiantRech!= null;
-        }
-      return false;
+
     }
-    private void openInterface(String email,String password,String role)
+    private boolean authenticateEnseignant(String email, String password) {
+
+        EnseignantDAO dataenseignant = new EnseignantDAO(Config.URL, Config.USERNAME, Config.PASSWORD);
+        Enseignant enseignant = dataenseignant.RechercheAuthentification(email,password);
+        return  enseignant!= null;
+
+    }
+
+    private void openInterfaceEtudiant(String email,String password)
     {
-        if (role.equals("etudiant"))
-        {
+
             EtudiantDAO dataEtudiant = new EtudiantDAO(Config.URL, Config.USERNAME, Config.PASSWORD);
             Etudiant etudiantRech = dataEtudiant.Recherche(password.toCharArray(),email);
             if (etudiantRech!=null)
@@ -85,11 +105,30 @@ public class Authentification extends Thread {
                out.println("SUCCESS");
                out.flush();
             }
+        out.println("FAILURE");
+        out.flush();
         }
-        else {
-            //interface enseignant
+    private void openInterfaceEnseignant(String email,String password)
+    {
+
+        EnseignantDAO dataenseignant = new EnseignantDAO(Config.URL, Config.USERNAME, Config.PASSWORD);
+        Enseignant enseignant = dataenseignant.RechercheAuthentification(email,password);
+        if (enseignant!=null)
+        {
+            try {
+                EnseignantGUI enseignantGUI=new EnseignantGUI(enseignant.getNom(),enseignant.getPrenom(),enseignant.getCode());
+                out.println("SUCCESS");
+                out.flush();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
         }
         out.println("FAILURE");
         out.flush();
     }
-}
+
+
+    }
+
+

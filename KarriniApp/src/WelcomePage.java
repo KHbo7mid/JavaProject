@@ -30,7 +30,7 @@ public class WelcomePage extends JFrame {
        ptitle.setOpaque(false);
 
         limage=new JLabel();
-        img=new ImageIcon("src/images/logo.png");
+        img=new ImageIcon("KarriniApp/src/images/logo.png");
         Image image=img.getImage().getScaledInstance(600,350,Image.SCALE_SMOOTH);
         ImageIcon newImg =new ImageIcon(image);
         limage.setIcon(newImg);
